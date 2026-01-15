@@ -2,6 +2,9 @@
 export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
+# Source secrets file (not tracked in git)
+[[ -f ~/.secrets ]] && source ~/.secrets
+
 # OS Detection
 case "$(uname -s)" in
   Darwin) OS="macos" ;;
@@ -50,31 +53,9 @@ export PYENV_ROOT="$HOME/.pyenv"
 [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
 command -v pyenv &>/dev/null && eval "$(pyenv init -)"
 
-# nvm (Node)
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"
-
-# Auto-switch node version from .nvmrc
-autoload -U add-zsh-hook
-load-nvmrc() {
-  local node_version="$(nvm version)"
-  local nvmrc_path="$(nvm_find_nvmrc)"
-
-  if [ -n "$nvmrc_path" ]; then
-    local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
-    if [ "$nvmrc_node_version" = "N/A" ]; then
-      nvm install
-    elif [ "$nvmrc_node_version" != "$node_version" ]; then
-      nvm use
-    fi
-  elif [ "$node_version" != "$(nvm version default)" ]; then
-    echo "Reverting to nvm default version"
-    nvm use default
-  fi
-}
-add-zsh-hook chpwd load-nvmrc
-load-nvmrc
+# fnm (Node) - fast node manager
+export PATH="$HOME/.local/share/fnm:$PATH"
+command -v fnm &>/dev/null && eval "$(fnm env --use-on-cd --shell zsh)"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
@@ -120,6 +101,7 @@ alias order_branches="git for-each-ref --sort=committerdate refs/heads/ --format
 alias vim="nvim"
 alias vi="nvim"
 alias garca="ga . && grbc"
+alias nvm="fnm"
 
 # macOS-only aliases
 if [[ "$OS" == "macos" ]]; then

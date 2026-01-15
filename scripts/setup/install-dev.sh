@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Install development version managers: nvm, pyenv, rbenv, bun, pnpm, yarn
+# Install development version managers: fnm, pyenv, rbenv, bun, pnpm, yarn
 # Also installs AI coding tools: opencode, claude-code
 
 set -e
@@ -10,23 +10,23 @@ source "$SCRIPT_DIR/../lib/helpers.sh"
 
 echo "==> Installing development tools..."
 
-# nvm (Node Version Manager)
-install_nvm() {
-  if [[ -d "$HOME/.nvm" ]]; then
-    echo "nvm is already installed"
+# fnm (Fast Node Manager)
+install_fnm() {
+  if command -v fnm &>/dev/null; then
+    echo "fnm is already installed"
   else
-    echo "Installing nvm..."
-    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
-    echo "nvm installed"
+    echo "Installing fnm..."
+    curl -fsSL https://fnm.vercel.app/install | bash -s -- --skip-shell
+    echo "fnm installed"
   fi
 
-  # Load nvm and install LTS as default if no default is set
-  export NVM_DIR="$HOME/.nvm"
-  [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-  if ! nvm version default &>/dev/null || [[ "$(nvm version default)" == "N/A" ]]; then
+  # Load fnm and install LTS as default if not installed
+  export PATH="$HOME/.local/share/fnm:$PATH"
+  eval "$(fnm env --shell bash)"
+  if ! fnm list | grep -q default; then
     echo "Installing Node LTS and setting as default..."
-    nvm install --lts
-    nvm alias default lts/*
+    fnm install --lts
+    fnm default lts-latest
     echo "Node LTS set as default"
   fi
 }
@@ -113,7 +113,7 @@ install_yarn() {
   echo "yarn installed"
 }
 
-install_nvm
+install_fnm
 install_pyenv
 install_rbenv
 install_bun
