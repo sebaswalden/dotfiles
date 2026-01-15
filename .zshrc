@@ -31,31 +31,17 @@ ZSH_THEME="agnoster"
 plugins=(git)
 source $ZSH/oh-my-zsh.sh
 
-# rbenv (Ruby)
+# mise (version manager for Node, Python, Ruby, etc.)
 if [[ "$OS" == "macos" ]]; then
-  export RBENV_ROOT=/opt/homebrew/opt/rbenv
+  # OpenSSL flags for Ruby compilation
   export LDFLAGS="-L/opt/homebrew/opt/openssl@1.1/lib"
   export CPPFLAGS="-I/opt/homebrew/opt/openssl@1.1/include"
   export PKG_CONFIG_PATH="/opt/homebrew/opt/openssl@1.1/lib/pkgconfig"
   export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/opt/homebrew/opt/openssl@1.1"
   export RUBY_CFLAGS=-DUSE_FFI_CLOSURE_ALLOC
   export optflags="-Wno-error=implicit-function-declaration"
-else
-  export RBENV_ROOT="$HOME/.rbenv"
 fi
-if [[ -d "$RBENV_ROOT" ]]; then
-  export PATH="$RBENV_ROOT/bin:$PATH"
-  eval "$(rbenv init -)"
-fi
-
-# pyenv (Python)
-export PYENV_ROOT="$HOME/.pyenv"
-[[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
-command -v pyenv &>/dev/null && eval "$(pyenv init -)"
-
-# fnm (Node) - fast node manager
-export PATH="$HOME/.local/share/fnm:$PATH"
-command -v fnm &>/dev/null && eval "$(fnm env --use-on-cd --shell zsh)"
+command -v mise &>/dev/null && eval "$(mise activate zsh)"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
@@ -101,7 +87,7 @@ alias order_branches="git for-each-ref --sort=committerdate refs/heads/ --format
 alias vim="nvim"
 alias vi="nvim"
 alias garca="ga . && grbc"
-alias nvm="fnm"
+alias nvm="mise"
 
 # macOS-only aliases
 if [[ "$OS" == "macos" ]]; then

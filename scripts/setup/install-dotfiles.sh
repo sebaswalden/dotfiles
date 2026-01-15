@@ -37,4 +37,7 @@ create_symlink "$DOTFILES_DIR/.zshrc" "$HOME/.zshrc"
 # Install nvim config
 create_symlink "$DOTFILES_DIR/.config/nvim" "$HOME/.config/nvim"
 
+# Install mise config
+create_symlink "$DOTFILES_DIR/.config/mise" "$HOME/.config/mise"
+
 echo "==> Dotfiles installed"

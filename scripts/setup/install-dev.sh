@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Install development version managers: fnm, pyenv, rbenv, bun, pnpm, yarn
+# Install development version managers: mise, bun, pnpm, yarn
 # Also installs AI coding tools: opencode, claude-code
 
 set -e
@@ -10,58 +10,28 @@ source "$SCRIPT_DIR/../lib/helpers.sh"
 
 echo "==> Installing development tools..."
 
-# fnm (Fast Node Manager)
-install_fnm() {
-  if command -v fnm &>/dev/null; then
-    echo "fnm is already installed"
+# mise (version manager for Node, Python, Ruby, etc.)
+install_mise() {
+  if command -v mise &>/dev/null; then
+    echo "mise is already installed"
   else
-    echo "Installing fnm..."
-    curl -fsSL https://fnm.vercel.app/install | bash -s -- --skip-shell
-    echo "fnm installed"
+    echo "Installing mise..."
+    curl https://mise.run | sh
+    echo "mise installed"
   fi
 
-  # Load fnm and install LTS as default if not installed
-  export PATH="$HOME/.local/share/fnm:$PATH"
-  eval "$(fnm env --shell bash)"
-  if ! fnm list | grep -q default; then
-    echo "Installing Node LTS and setting as default..."
-    fnm install --lts
-    fnm default lts-latest
+  # Load mise and install default tools
+  export PATH="$HOME/.local/bin:$PATH"
+  eval "$(mise activate bash)"
+
+  # Trust mise config if it exists
+  mise trust "$HOME/.config/mise/config.toml" 2>/dev/null || true
+
+  # Install Node LTS as default if not set
+  if ! mise list node 2>/dev/null | grep -q .; then
+    echo "Installing Node LTS..."
+    mise use --global node@lts
     echo "Node LTS set as default"
-  fi
-}
-
-# pyenv (Python Version Manager)
-install_pyenv() {
-  if [[ -d "$HOME/.pyenv" ]]; then
-    echo "pyenv is already installed"
-    return
-  fi
-
-  echo "Installing pyenv..."
-  curl https://pyenv.run | bash
-  echo "pyenv installed"
-}
-
-# rbenv (Ruby Version Manager)
-install_rbenv() {
-  if [[ "$OS" == "macos" ]]; then
-    if command -v rbenv &>/dev/null; then
-      echo "rbenv is already installed"
-      return
-    fi
-    echo "Installing rbenv..."
-    pkg_install rbenv ruby-build
-    echo "rbenv installed"
-  else
-    if [[ -d "$HOME/.rbenv" ]]; then
-      echo "rbenv is already installed"
-      return
-    fi
-    echo "Installing rbenv..."
-    git clone https://github.com/rbenv/rbenv.git "$HOME/.rbenv"
-    git clone https://github.com/rbenv/ruby-build.git "$HOME/.rbenv/plugins/ruby-build"
-    echo "rbenv installed"
   fi
 }
 
@@ -113,9 +83,7 @@ install_yarn() {
   echo "yarn installed"
 }
 
-install_fnm
-install_pyenv
-install_rbenv
+install_mise
 install_bun
 install_pnpm
 install_yarn
