@@ -114,5 +114,30 @@ install_claude_code() {
 install_opencode
 install_claude_code
 
+# Neovim provider packages (for plugins that use remote hosts)
+install_nvim_providers() {
+  echo "Installing Neovim provider packages..."
+
+  # Node.js provider
+  if command -v npm &>/dev/null; then
+    npm install -g neovim
+    echo "Node.js neovim package installed"
+  fi
+
+  # Python provider
+  if command -v pip &>/dev/null; then
+    pip install pynvim
+    echo "Python pynvim package installed"
+  fi
+
+  # Ruby provider
+  if command -v gem &>/dev/null; then
+    gem install neovim
+    echo "Ruby neovim gem installed"
+  fi
+}
+
+install_nvim_providers
+
 echo "==> Development tools installed"
 echo "Note: Restart your shell or source ~/.zshrc to use version managers"

@@ -1,14 +1,22 @@
 return {
   "nvim-treesitter/nvim-treesitter",
   lazy = false,
-  build = function()
-    -- Install parsers on plugin install/update only
-    require("nvim-treesitter").install({
-      "javascript", "typescript", "xml", "c", "lua", "vim", "vimdoc",
-      "svelte", "css", "scss", "html", "tsx", "json"
-    })
-  end,
+  branch = "master",
+  build = ":TSUpdate",
   config = function()
-    require("nvim-treesitter").setup({})
+    require("nvim-treesitter.configs").setup({
+      ensure_installed = {
+        "javascript", "typescript", "tsx", "c", "lua", "vim", "vimdoc",
+        "svelte", "css", "scss", "html", "json", "ruby", "rust"
+      },
+      sync_install = false,
+      auto_install = true,
+      highlight = {
+        enable = true,
+      },
+      indent = {
+        enable = true,
+      },
+    })
   end,
 }

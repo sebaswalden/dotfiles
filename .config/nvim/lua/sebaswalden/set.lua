@@ -25,3 +25,5 @@ vim.opt.isfname:append("@-@")
 
 vim.opt.updatetime = 50
 
+-- Disable unused providers
+vim.g.loaded_perl_provider = 0
