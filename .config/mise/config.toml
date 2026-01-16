@@ -1,2 +1,12 @@
 [settings]
-idiomatic_version_file_enable_tools = ["node"]
+idiomatic_version_file_enable_tools = ["node", "python", "ruby", "rust", "golang", "bun", "pnpm", "yarn"]
+
+[tools]
+node = "lts"
+python = "3.14"
+ruby = "3.2"
+rust = "stable"
+golang = "1.25"
+bun = "latest"
+pnpm = "latest"
+yarn = "latest"

@@ -21,7 +21,6 @@ export PATH="$HOME/.local/bin:$PATH"
 if [[ "$OS" == "macos" ]]; then
   export PATH="/opt/homebrew/bin:$PATH"
   export PATH="/opt/homebrew/sbin:$PATH"
-  export PATH="/opt/homebrew/opt/openssl@1.1/bin:$PATH"
   export HOMEBREW_NO_AUTO_UPDATE=1
 fi
 
@@ -32,15 +31,6 @@ plugins=(git)
 source $ZSH/oh-my-zsh.sh
 
 # mise (version manager for Node, Python, Ruby, etc.)
-if [[ "$OS" == "macos" ]]; then
-  # OpenSSL flags for Ruby compilation
-  export LDFLAGS="-L/opt/homebrew/opt/openssl@1.1/lib"
-  export CPPFLAGS="-I/opt/homebrew/opt/openssl@1.1/include"
-  export PKG_CONFIG_PATH="/opt/homebrew/opt/openssl@1.1/lib/pkgconfig"
-  export RUBY_CONFIGURE_OPTS="--with-openssl-dir=/opt/homebrew/opt/openssl@1.1"
-  export RUBY_CFLAGS=-DUSE_FFI_CLOSURE_ALLOC
-  export optflags="-Wno-error=implicit-function-declaration"
-fi
 command -v mise &>/dev/null && eval "$(mise activate zsh)"
 
 # bun

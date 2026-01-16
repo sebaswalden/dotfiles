@@ -27,12 +27,10 @@ install_mise() {
   # Trust mise config if it exists
   mise trust "$HOME/.config/mise/config.toml" 2>/dev/null || true
 
-  # Install Node LTS as default if not set
-  if ! mise list node 2>/dev/null | grep -q .; then
-    echo "Installing Node LTS..."
-    mise use --global node@lts
-    echo "Node LTS set as default"
-  fi
+  # Ensure global tools are installed
+  echo "Installing global mise tools..."
+  mise install
+  echo "Global mise tools installed"
 }
 
 # bun
