@@ -5,6 +5,7 @@ return {
   -- Supermaven
   {
     "supermaven-inc/supermaven-nvim",
+    dependencies = { "hrsh7th/nvim-cmp" },
     config = function()
       require("supermaven-nvim").setup({})
     end,
@@ -34,6 +35,7 @@ return {
   -- Avante.nvim with build process
   {
     "yetone/avante.nvim",
+    dependencies = { "hrsh7th/nvim-cmp" },
     branch = "main",
     build = "make",
     config = function()
