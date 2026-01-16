@@ -10,6 +10,26 @@ source "$SCRIPT_DIR/../lib/helpers.sh"
 
 echo "==> Installing development tools..."
 
+# Ruby build dependencies (needed before mise installs Ruby)
+install_ruby_deps() {
+  echo "Installing Ruby build dependencies..."
+  case "$PKG_MANAGER" in
+    brew)
+      pkg_install libyaml openssl@1.1 readline
+      ;;
+    pacman)
+      pkg_install base-devel libyaml openssl readline zlib
+      ;;
+    apt)
+      pkg_install build-essential libyaml-dev libssl-dev libreadline-dev zlib1g-dev
+      ;;
+    dnf)
+      pkg_install libyaml-devel openssl-devel readline-devel zlib-devel
+      ;;
+  esac
+  echo "Ruby build dependencies installed"
+}
+
 # mise (version manager for Node, Python, Ruby, etc.)
 install_mise() {
   if command -v mise &>/dev/null; then
@@ -81,6 +101,7 @@ install_yarn() {
   echo "yarn installed"
 }
 
+install_ruby_deps
 install_mise
 install_bun
 install_pnpm
