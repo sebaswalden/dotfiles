@@ -16,6 +16,7 @@ return {
         ensure_installed = {
           "eslint",
           "lua_ls",
+          "pylsp",
           "rust_analyzer",
           "svelte",
           "ts_ls",
@@ -216,8 +217,31 @@ return {
         capabilities = capabilities,
       })
 
+      vim.lsp.config("pylsp", {
+        cmd = { "pylsp" },
+        filetypes = { "python" },
+        root_markers = { "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", "Pipfile", ".git" },
+        capabilities = capabilities,
+        settings = {
+          pylsp = {
+            plugins = {
+              pycodestyle = { enabled = true },
+              pyflakes = { enabled = true },
+              yapf = { enabled = false },
+              autopep8 = { enabled = false },
+              mccabe = { enabled = false },
+              pylsp_mypy = {
+                enabled = true,
+                live_mode = true,
+                strict = false,
+              },
+            },
+          },
+        },
+      })
+
       -- Enable LSP servers
-      vim.lsp.enable({ "lua_ls", "eslint", "rust_analyzer", "svelte", "ts_ls", "tailwindcss", "html", "ruby_lsp" })
+      vim.lsp.enable({ "lua_ls", "eslint", "pylsp", "rust_analyzer", "svelte", "ts_ls", "tailwindcss", "html", "ruby_lsp" })
 
       -- Diagnostic configuration
       vim.diagnostic.config({

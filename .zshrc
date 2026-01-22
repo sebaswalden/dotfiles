@@ -57,13 +57,6 @@ else
   command -v terraform &>/dev/null && complete -o nospace -C "$(which terraform)" terraform
 fi
 
-# Autojump
-if [[ "$OS" == "macos" ]]; then
-  [ -f /usr/local/etc/profile.d/autojump.sh ] && . /usr/local/etc/profile.d/autojump.sh
-else
-  [ -f /usr/share/autojump/autojump.zsh ] && . /usr/share/autojump/autojump.zsh
-fi
-
 # Base16 Shell theme
 BASE16_SHELL="$HOME/.config/base16-shell/"
 [ -n "$PS1" ] && [ -s "$BASE16_SHELL/profile_helper.sh" ] && source "$BASE16_SHELL/profile_helper.sh"
